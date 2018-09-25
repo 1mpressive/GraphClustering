@@ -2,8 +2,9 @@ def washImage():
     g_images = set()
     k_images = set()
 
+    #store images'id in k_image
     check_val = -1
-    with open('rel_image', 'r') as ri_in:
+    with open('rel_image', 'r') as ri_in: 
         for ri_line in ri_in:
             ri_images = ri_line.strip().split(' ')
             if int(ri_images[0]) != check_val:
@@ -11,8 +12,9 @@ def washImage():
                 k_images.add(ri_images[0])
         ri_in.close()
 
+    #store images with tag in g_image
     check_val = -1
-    count = 0
+    count = 0 #numbers of images with tag
     with open('rel_tag', 'r') as tag_in:
         for line in tag_in:
             img, usr, tag = line.strip().split(' ')
@@ -24,8 +26,9 @@ def washImage():
                     print('loadImage = %d' % count)
         tag_in.close()
 
+    # store image with tag and its neighbors in 'washed_img_img'
     with open('washed_img_img', 'w') as wi_ou:
-        with open('rel_image', 'r') as img_in:
+        with open('rel_image', 'r') as img_in: # images and their neighbors
             for line in img_in:
                 p_images = line.strip().split(' ')
                 if p_images[0] not in g_images:
@@ -40,7 +43,7 @@ def washImage():
 
 
 def imageRelationSymmetrization():
-    img_img = {}
+    img_img = {} # record 
     with open('washed_img_img', 'r') as wii_in:
         for line in wii_in:
             i_imgs = line.strip().split('\t')
@@ -48,14 +51,14 @@ def imageRelationSymmetrization():
     wii_in.close()
 
     count = 0
-    for check_img in img_img:
+    for check_img in img_img: # ????
         count += 1
         if count % 20000 == 0:
             print('syncImage = %d' % count)
         delete_list = []
-        neighbor_imgs = img_img[check_img]
+        neighbor_imgs = img_img[check_img] # record neighbors' id
         for neighbor_img in neighbor_imgs:
-            if check_img not in img_img[neighbor_img]:
+            if check_img not in img_img[neighbor_img]: # but neighbor_img in img_img[check_img]
                 delete_list.append(neighbor_img)
         for de in delete_list:
             img_img[check_img].remove(de)
@@ -70,10 +73,10 @@ def imageRelationSymmetrization():
 # Filter data for specified data size
 def washii():
     delset = set()
-    with open('sii', 'r') as sii_ou:
+    with open('sii', 'r') as sii_ou: # ???synced_img_img
         for line in sii_ou:
             temp_imgs = line.strip().split('\t')
-            if len(temp_imgs) < 8:
+            if len(temp_imgs) < 8: # number of neighbors <8
                 for t in temp_imgs:
                     delset.add(t)
 
