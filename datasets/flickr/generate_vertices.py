@@ -59,7 +59,7 @@ def imageRelationSymmetrization():
         neighbor_imgs = img_img[check_img] # record neighbors' id
         for neighbor_img in neighbor_imgs:
             if check_img not in img_img[neighbor_img]: # but neighbor_img in img_img[check_img]
-                delete_list.append(neighbor_img)
+                delete_list.append(neighbor_img) # append is add sth at end
         for de in delete_list:
             img_img[check_img].remove(de)
 
@@ -95,22 +95,22 @@ def washii():
 
 
 def generateVertices():
-    img_set = set()
-    img_id_mapper = {}
-    img_neighbor_num_mapper = {}
-    img_neighbor_list_mapper = {}
+    img_set = set() # images' id 24515
+    img_id_mapper = {} # 24515->0
+    img_neighbor_num_mapper = {} # [2 0 0]
+    img_neighbor_list_mapper = {} # [3 2 6]
 
     user_set = set()
     user_id_mapper = {}
-    user_neighbor_num_mapper = {}
-    user_neighbor_list_mapper = {}
+    user_neighbor_num_mapper = {} # [2 0 0]
+    user_neighbor_list_mapper = {} # [3 2]
 
     tag_set = set()
     tag_id_mapper = {}
     tag_neighbor_num_mapper = {}
     tag_neighbor_list_mapper = {}
 
-    vertexid = 0
+    vertexid = 0 # number of images with tag - 1
 
     with open('sii', 'r') as img_in:
         for line in img_in:
@@ -124,14 +124,15 @@ def generateVertices():
     with open('sii', 'r') as img_in2:
         for line in img_in2:
             tt_imgs2 = line.strip().split('\t')
-            current_img = img_id_mapper[tt_imgs2[0]]
-            img_neighbor_num_mapper[current_img][0] = len(tt_imgs2) - 1
-            for t in range(1, len(tt_imgs2)):
-                img_neighbor_list_mapper[current_img].append(img_id_mapper[tt_imgs2[t]])
+            current_img = img_id_mapper[tt_imgs2[0]] # 0
+            img_neighbor_num_mapper[current_img][0] = len(tt_imgs2) - 1 # number of neighbors - 1
+            for t in range(1, len(tt_imgs2)): # neighbors
+                img_neighbor_list_mapper[current_img].append(img_id_mapper[tt_imgs2[t]]) 
 
     img_num = vertexid
     print ('img = %d' % vertexid)
 
+    # vertexid !=0
     with open('rel_tag', 'r') as rtag_in:
         for line in rtag_in:
             t_img, t_user, t_tag = line.strip().split(' ')
@@ -146,7 +147,7 @@ def generateVertices():
                         user_neighbor_list_mapper[current_user].append(current_img)
                 else:
                     user_set.add(t_user)
-                    user_id_mapper[t_user] = vertexid
+                    user_id_mapper[t_user] = vertexid # why vertexid?
                     user_neighbor_num_mapper[vertexid] = [1, 0, 0]
                     user_neighbor_list_mapper[vertexid] = []
                     user_neighbor_list_mapper[vertexid].append(current_img)
